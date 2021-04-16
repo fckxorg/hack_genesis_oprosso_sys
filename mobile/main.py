@@ -1,11 +1,11 @@
 from flask import Flask
 from flask import request
-from multiprocessing import Process
 import subprocess
 
 app = Flask(__name__)
 
 record_process = None 
+record_file = None
 
 @app.route('/pair', methods=['GET']) # invoke pairing with android device
 def pair_with_device():
@@ -30,7 +30,10 @@ def connect_to_device():
 @app.route('/start', methods=['GET']) # start recording events
 def start_event_record():
     global record_process
-    record_process = subprocess.Popen(args=['adb', 'shell', 'getevent', '-lt'])
+    global record_file
+
+    record_file = open('event-log.txt', 'w')
+    record_process = subprocess.Popen(args=['adb', 'shell', 'getevent', '-lt'], stdout=record_file)
     return 'Ok'
 
 @app.route('/stop', methods=['GET']) # stop recording
