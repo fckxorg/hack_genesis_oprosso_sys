@@ -24,7 +24,7 @@ class Node:
     
 
 def collect_layout_nodes(filename):
-    with open('layout.xml', 'r') as layout:
+    with open(filename, 'r') as layout:
         content = layout.read()
         bs_content = bs(content, 'lxml')
 

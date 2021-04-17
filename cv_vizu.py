@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from event_log_parser import parse_events, batch_events
+from layout_parser import collect_layout_nodes
 import cv2
 
 cap = cv2.VideoCapture('const.mp4')
@@ -15,9 +16,14 @@ events = parse_events('event-log.txt')
 batched = batch_events(fps, int(frames), events)
 current_frame = 21
 
+layout = collect_layout_nodes("layout.xml")
+
 while(cap.isOpened):
     ret, frame = cap.read()
     fixed = cv2.resize(frame, (1200, 2000), cv2.INTER_AREA)
+
+    for node in layout:
+        fixed = cv2.rectangle(fixed, tuple(node.top_left), tuple(node.bottom_right), (0, 255, 0), thickness=3)
     
     for event in batched[current_frame]:
         fixed = cv2.circle(fixed, (event.x, event.y), 30, (0, 0, 255), -1)
