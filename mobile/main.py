@@ -25,7 +25,7 @@ def xml_dumper():
         png.close()
 
         xml_dumps_count += 1
-        time.sleep(1)
+        time.sleep(0.3)
 
 @app.route('/pair', methods=['GET']) # invoke pairing with android device
 def pair_with_device():
