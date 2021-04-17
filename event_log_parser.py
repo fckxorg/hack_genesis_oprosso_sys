@@ -102,8 +102,22 @@ def parse_events(filename):
 
         return event_objects
 
-events = parse_events('event-log.txt')
+def batch_events(fps, frames_num, events):
+    events.append(Event(None, None, None, None))
+    frame_length = 1 / fps # Get frame length
+    current_event = 0
+    batched = list() # List of events per frame
+    for i in range(frames_num):
+        print("Generating frame {}".format(i))
+        batched.append(list()) # List for current frame events
+        while events[current_event].time is not None and float(events[current_event].time) < frame_length * (i + 1):
+            batched[-1].append(events[current_event])
+            current_event += 1
 
-for event in events:
-    print(event.__dict__)
+    return batched
+
+# events = parse_events('event-log.txt')
+
+# for event in events:
+#     print(event.__dict__)
 
