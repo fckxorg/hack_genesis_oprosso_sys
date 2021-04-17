@@ -25,9 +25,20 @@ class Node:
         corners = self.bounds.split(']')
         self.top_left = [int(point) for point in corners[0][1:].split(',')]
         self.bottom_right = [int(point) for point in corners[1][1:].split(',')]
+
+def prepare_xml(filename):
+    with open(filename, 'r+', encoding='utf-8') as xml_file:
+        content = xml_file.read()
+        xml_file.seek(0)
+        xml_file.truncate(0)
+        xml_start = content.find('<')
+        xml_end = content.rfind('>') + 1
+        raw = content[xml_start : xml_end]
+        xml_file.write(raw)
     
 
 def collect_layout_nodes(filename):
+    prepare_xml(filename)
     with open(filename, 'r') as layout:
         content = layout.read()
         bs_content = bs(content, 'lxml')
@@ -57,6 +68,7 @@ def write_tree(node, dot, parent_id):
         write_tree(child, dot, new_parent_id)
 
 def dump_xml_tree(filename, output):
+    prepare_xml(filename)
     dot = Digraph(comment='XML Tree')
     tree = ET.parse(filename)
     root = tree.getroot()
@@ -93,6 +105,9 @@ def compare_subtrees(fnode, snode):
     return True
 
 def compare_xml_trees(first_xml, second_xml):
+    prepare_xml(first_xml)
+    prepare_xml(second_xml)
+
     ftree = ET.parse(first_xml)
     stree = ET.parse(second_xml)
     
