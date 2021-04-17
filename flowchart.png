@@ -1,7 +1,0 @@
-// Flow Chart
-digraph {
-	0 [label=Default image="testflow/0.png" shape=rect]
-	1 [label=Default image="testflow/1.png" shape=rect]
-	0 -> 1
-	1 -> 0
-}
