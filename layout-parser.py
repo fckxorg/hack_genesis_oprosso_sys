@@ -17,8 +17,10 @@ class Node:
         self.scrollable = keys['scrollable']
         self.selected = keys['selected']
         self.text = keys['text']
-
         
+        corners = self.bounds.split(']')
+        self.top_left = [int(point) for point in corners[0][1:].split(',')]
+        self.bottom_right = [int(point) for point in corners[1][1:].split(',')]
     
 
 with open('layout.xml', 'r') as layout:
@@ -33,5 +35,3 @@ with open('layout.xml', 'r') as layout:
     
     for node in nodes:
         print(node.__dict__)
-
-        
