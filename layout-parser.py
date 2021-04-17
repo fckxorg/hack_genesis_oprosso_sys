@@ -23,15 +23,14 @@ class Node:
         self.bottom_right = [int(point) for point in corners[1][1:].split(',')]
     
 
-with open('layout.xml', 'r') as layout:
-    content = layout.read()
-    bs_content = bs(content, 'lxml')
+def collect_layout_nodes(filename):
+    with open('layout.xml', 'r') as layout:
+        content = layout.read()
+        bs_content = bs(content, 'lxml')
 
-    layout_nodes = bs_content.find_all('node')
-    
-    nodes = []
-    for node in layout_nodes:
-        nodes.append(Node(node))
-    
-    for node in nodes:
-        print(node.__dict__)
+        layout_nodes = bs_content.find_all('node')
+        
+        nodes = []
+        for node in layout_nodes:
+            nodes.append(Node(node))
+        return nodes
